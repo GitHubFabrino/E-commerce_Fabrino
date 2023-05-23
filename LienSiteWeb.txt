@@ -1,0 +1,8 @@
+Pour le bootstrap
+https://getbootstrap.com/docs/5.3/components/navbar/#nav
+
+Pour le font 
+https://cdnjs.com/libraries/font-awesome
+
+POUR L ICONS 
+https://fontawesome.com/icons
