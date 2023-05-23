@@ -110,6 +110,7 @@ include('functions/common_function.php');
 <?php
         }
     }
+                    search_product();
                     get_unique_categories();
                     get_unique_brand();
                     ?>

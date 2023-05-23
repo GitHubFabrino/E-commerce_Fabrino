@@ -20,7 +20,7 @@ function getProducts()
                 $brand_id = $row_data['brand_id'];
                 $product_price = $row_data['product_price'];
                 $product_image1 = $row_data['product_image1'];
-?>
+                ?>
                 <div class="col-md-4 mb-2">
                     <div class="card">
                         <img src="./admin/product_images/<?= $product_image1 ?>" class="card-img-top p-1" alt="<?= $product_title ?>">
@@ -208,6 +208,12 @@ function search_product()
         $select_query = "SELECT * FROM `products` WHERE product_keywords like '$search_data_value";
 
         $resultat_select = mysqli_query($con, $select_query);
+
+
+        $num_of_rows = mysqli_num_rows($resultat_select);
+        if ($num_of_rows == 0) {
+            echo '<h2 class="text-center text-danger">No results match.No products found on this category/h2>';
+        }
 
         while ($row_data = mysqli_fetch_assoc($resultat_select)) {
             $product_id = $row_data['product_id'];
