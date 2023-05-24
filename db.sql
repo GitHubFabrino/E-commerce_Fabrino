@@ -24,13 +24,15 @@ CREATE TABLE `mystore`.`products` (
     PRIMARY KEY (`product_id`)
 ) ENGINE = InnoDB;
 
-ALTER TABLE
-    `products`
-ADD
-    `date` TIMESTAMP NOT NULL
-AFTER
-    `product_price`,
-ADD
-    `status` VARCHAR(255) NOT NULL
-AFTER
-    `date`;
+ALTER TABLE `products`
+ADD `date` TIMESTAMP NOT NULL
+AFTER `product_price`,
+    ADD `status` VARCHAR(255) NOT NULL
+AFTER `date`;
+
+CREATE TABLE `mystore`.`cart_details` (
+    `product_id` INT NOT NULL AUTO_INCREMENT,
+    `ip_address` VARCHAR(255) NOT NULL,
+    `quantity` INT(100) NOT NULL,
+    PRIMARY KEY (`product_id`)
+) ENGINE = InnoDB;

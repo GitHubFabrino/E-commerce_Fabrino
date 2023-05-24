@@ -83,6 +83,8 @@ include('functions/common_function.php');
                     getProducts();
                     get_unique_categories();
                     get_unique_brand();
+                    $ip = getIpAddress();
+                    echo 'user ip : '.$ip;
                     ?>
                 </div>
             </div>

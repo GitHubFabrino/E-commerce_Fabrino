@@ -79,37 +79,8 @@ include('functions/common_function.php');
             <div class="col-md-10 p-5">
                 <!-- Products -->
                 <div class="row">
+
                     <?php
-                    if (isset($_GET['search_data_product'])) {
-        $search_data_value=$_GET['search_data'];
-        echo $search_data_value;
-        $select_query = "SELECT * FROM `products` WHERE product_keywords like '$search_data_value";
-
-        $resultat_select = mysqli_query($con, $select_query);
-
-        while ($row_data = mysqli_fetch_assoc($resultat_select)) {
-            $product_id = $row_data['product_id'];
-            $product_title = $row_data['product_title'];
-            $description = $row_data['description'];
-            $category_id = $row_data['category_id'];
-            $brand_id = $row_data['brand_id'];
-            $product_price = $row_data['product_price'];
-            $product_image1 = $row_data['product_image1'];
-        ?>
-            <div class="col-md-4 mb-2">
-                <div class="card">
-                    <img src="./admin/product_images/<?= $product_image1 ?>" class="card-img-top p-1" alt="<?= $product_title ?>">
-                    <div class="card-body">
-                        <h5 class="card-title p-1"><?= $product_title ?></h5>
-                        <p class="card-text"><?= $description ?></p>
-                        <a href="#" class="btn btn-info">Add to card</a>
-                        <a href="#" class="btn btn-secondary">View more</a>
-                    </div>
-                </div>
-            </div>
-<?php
-        }
-    }
                     search_product();
                     get_unique_categories();
                     get_unique_brand();
@@ -144,7 +115,7 @@ include('functions/common_function.php');
             </div>
         </div>
         <!-- Dernier enfant -->
-        <?php include('includes/footer.php')?>
+        <?php include('includes/footer.php') ?>
     </div>
 
 

@@ -20,7 +20,7 @@ function getProducts()
                 $brand_id = $row_data['brand_id'];
                 $product_price = $row_data['product_price'];
                 $product_image1 = $row_data['product_image1'];
-                ?>
+?>
                 <div class="col-md-4 mb-2">
                     <div class="card">
                         <img src="./admin/product_images/<?= $product_image1 ?>" class="card-img-top p-1" alt="<?= $product_title ?>">
@@ -28,7 +28,7 @@ function getProducts()
                             <h5 class="card-title p-1"><?= $product_title ?></h5>
                             <p class="card-text"><?= $description ?></p>
                             <a href="#" class="btn btn-info">Add to card</a>
-                            <a href="#" class="btn btn-secondary">View more</a>
+                            <a href="product_detail.php?product_id=<?= $product_id ?>" class="btn btn-secondary">View more</a>
                         </div>
                     </div>
                 </div>
@@ -63,7 +63,7 @@ function getAllProducts()
                             <h5 class="card-title p-1"><?= $product_title ?></h5>
                             <p class="card-text"><?= $description ?></p>
                             <a href="#" class="btn btn-info">Add to card</a>
-                            <a href="#" class="btn btn-secondary">View more</a>
+                            <a href="product_detail.php?product_id=<?= $product_id ?>" class="btn btn-secondary">View more</a>
                         </div>
                     </div>
                 </div>
@@ -103,7 +103,7 @@ function get_unique_categories()
                         <h5 class="card-title p-1"><?= $product_title ?></h5>
                         <p class="card-text"><?= $description ?></p>
                         <a href="#" class="btn btn-info">Add to card</a>
-                        <a href="#" class="btn btn-secondary">View more</a>
+                        <a href="product_detail.php?product_id=<?= $product_id ?>" class="btn btn-secondary">View more</a>
 
                     </div>
                 </div>
@@ -143,7 +143,7 @@ function get_unique_brand()
                         <h5 class="card-title p-1"><?= $product_title ?></h5>
                         <p class="card-text"><?= $description ?></p>
                         <a href="#" class="btn btn-info">Add to card</a>
-                        <a href="#" class="btn btn-secondary">View more</a>
+                        <a href="product_detail.php?product_id=<?= $product_id ?>" class="btn btn-secondary">View more</a>
 
                     </div>
                 </div>
@@ -203,16 +203,15 @@ function search_product()
 
 
     if (isset($_GET['search_data_product'])) {
-        $search_data_value=$_GET['search_data'];
-        echo $search_data_value;
-        $select_query = "SELECT * FROM `products` WHERE product_keywords like '$search_data_value";
+        $search_data_value = $_GET['search_data'];
+        $select_query = "SELECT * FROM `products` WHERE product_keywords LIKE '%$search_data_value%'";
 
         $resultat_select = mysqli_query($con, $select_query);
 
 
         $num_of_rows = mysqli_num_rows($resultat_select);
         if ($num_of_rows == 0) {
-            echo '<h2 class="text-center text-danger">No results match.No products found on this category/h2>';
+            echo '<h2 class="text-center text-danger">No results match.No products found on this category</h2>';
         }
 
         while ($row_data = mysqli_fetch_assoc($resultat_select)) {
@@ -231,13 +230,98 @@ function search_product()
                         <h5 class="card-title p-1"><?= $product_title ?></h5>
                         <p class="card-text"><?= $description ?></p>
                         <a href="#" class="btn btn-info">Add to card</a>
-                        <a href="#" class="btn btn-secondary">View more</a>
+                        <a href="product_detail.php?product_id=<?= $product_id ?>" class="btn btn-secondary">View more</a>
                     </div>
                 </div>
             </div>
-<?php
+            <?php
         }
     }
 }
+
+// view details function
+function view_details()
+{
+    global $con;
+    if (isset($_GET['product_id'])) {
+        if (!isset($_GET['category'])) {
+            if (!isset($_GET['brand'])) {
+                $product_id = $_GET['product_id'];
+
+                $select_query = "SELECT * FROM `products` WHERE product_id=$product_id ";
+                $resultat_select = mysqli_query($con, $select_query);
+
+
+                $num_of_rows = mysqli_num_rows($resultat_select);
+                if ($num_of_rows == 0) {
+                    echo '<h2 class="text-center text-danger p-1">No results match.No products found on this category</h2>';
+                }
+
+
+                while ($row_data = mysqli_fetch_assoc($resultat_select)) {
+                    $product_id = $row_data['product_id'];
+                    $product_title = $row_data['product_title'];
+                    $description = $row_data['description'];
+                    $category_id = $row_data['category_id'];
+                    $brand_id = $row_data['brand_id'];
+                    $product_price = $row_data['product_price'];
+                    $product_image1 = $row_data['product_image1'];
+                    $product_image2 = $row_data['product_image2'];
+                    $product_image3 = $row_data['product_image3'];
+            ?>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <img src="./admin/product_images/<?= $product_image1 ?>" class="card-img-top p-1" alt="<?= $product_title ?>">
+                            <div class="card-body">
+                                <h5 class="card-title p-1"><?= $product_title ?></h5>
+                                <p class="card-text"><?= $description ?></p>
+                                <a href="#" class="btn btn-info">Add to card</a>
+                                <a href="product_detail.php?product_id=<?= $product_id ?>" class="btn btn-secondary">View more</a>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-8">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h4 class="text-center text-info mb-5 p-1">Related products</h4>
+                            </div>
+                            <div class="col-md-6">
+                                <img src="./admin/product_images/<?= $product_image2 ?>" class="card-img-top p-1" alt="<?= $product_title ?>">
+                            </div>
+                            <div class="col-md-6">
+                                <img src="./admin/product_images/<?= $product_image3 ?>" class="card-img-top p-1" alt="<?= $product_title ?>">
+
+                            </div>
+                        </div>
+
+                    </div>
+<?php
+                }
+            }
+        }
+    } else {
+        echo '<h2 class="text-center text-danger p-1">No results match.No products found on this category</h2>';
+    }
+}
+
+function getIpAddress()
+{
+    // Si l'adresse IP est stockée dans la variable d'environnement HTTP_X_FORWARDED_FOR
+    if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+        $ip = $_SERVER['HTTP_CLIENT_IP'];
+    }
+    // Sinon, si l'adresse IP est stockée dans la variable d'environnement REMOTE_ADDR
+    elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+    } else {
+        $ip = $_SERVER['REMOTE_ADDR'];
+    }
+
+
+    return $ip;
+}
+
 
 ?>
