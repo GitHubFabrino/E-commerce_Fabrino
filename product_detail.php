@@ -44,7 +44,7 @@ include('functions/common_function.php');
                             <a class="nav-link" href="#">Contact</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#"><i class="fa-solid fa-cart-shopping"></i><sup>1</sup></a>
+                            <a class="nav-link" href="#"><i class="fa-solid fa-cart-shopping"></i><sup><?php cart_item(); ?></sup></a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Total Price :100/-</a>
@@ -58,6 +58,9 @@ include('functions/common_function.php');
                 </div>
             </div>
         </nav>
+        <?php
+        cart();
+        ?>
         <!-- Second child -->
         <div class="nav navbar navbar-expand-lg navbar-dark bg-secondary">
             <ul class="navbar-nav me-auto">
@@ -79,7 +82,7 @@ include('functions/common_function.php');
             <div class="col-md-10 p-5">
                 <!-- Products -->
                 <div class="row">
-                    
+
                     <?php
                     view_details();
                     get_unique_categories();

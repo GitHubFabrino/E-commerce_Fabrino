@@ -2,6 +2,7 @@
 
 // include('../includes/dbConnect.php');
 include('includes/dbConnect.php');
+include('includes/fonction.php');
 
 // recuperer 6 produits
 function getProducts()
@@ -27,7 +28,8 @@ function getProducts()
                         <div class="card-body">
                             <h5 class="card-title p-1"><?= $product_title ?></h5>
                             <p class="card-text"><?= $description ?></p>
-                            <a href="#" class="btn btn-info">Add to card</a>
+                            <p class="card-text">Price : <?= $product_price ?>/-</p>
+                            <a href="index.php?add_to_cart=<?= $product_id ?>" class="btn btn-info">Add to card</a>
                             <a href="product_detail.php?product_id=<?= $product_id ?>" class="btn btn-secondary">View more</a>
                         </div>
                     </div>
@@ -62,7 +64,8 @@ function getAllProducts()
                         <div class="card-body">
                             <h5 class="card-title p-1"><?= $product_title ?></h5>
                             <p class="card-text"><?= $description ?></p>
-                            <a href="#" class="btn btn-info">Add to card</a>
+                            <p class="card-text">Price : <?= $product_price ?>/-</p>
+                            <a href="index.php?add_to_cart=<?= $product_id ?>" class="btn btn-info">Add to card</a>
                             <a href="product_detail.php?product_id=<?= $product_id ?>" class="btn btn-secondary">View more</a>
                         </div>
                     </div>
@@ -102,7 +105,8 @@ function get_unique_categories()
                     <div class="card-body">
                         <h5 class="card-title p-1"><?= $product_title ?></h5>
                         <p class="card-text"><?= $description ?></p>
-                        <a href="#" class="btn btn-info">Add to card</a>
+                        <p class="card-text">Price : <?= $product_price ?>/-</p>
+                        <a href="index.php?add_to_cart=<?= $product_id ?>" class="btn btn-info">Add to card</a>
                         <a href="product_detail.php?product_id=<?= $product_id ?>" class="btn btn-secondary">View more</a>
 
                     </div>
@@ -142,7 +146,8 @@ function get_unique_brand()
                     <div class="card-body">
                         <h5 class="card-title p-1"><?= $product_title ?></h5>
                         <p class="card-text"><?= $description ?></p>
-                        <a href="#" class="btn btn-info">Add to card</a>
+                        <p class="card-text">Price : <?= $product_price ?>/-</p>
+                        <a href="index.php?add_to_cart=<?= $product_id ?>" class="btn btn-info">Add to card</a>
                         <a href="product_detail.php?product_id=<?= $product_id ?>" class="btn btn-secondary">View more</a>
 
                     </div>
@@ -229,7 +234,8 @@ function search_product()
                     <div class="card-body">
                         <h5 class="card-title p-1"><?= $product_title ?></h5>
                         <p class="card-text"><?= $description ?></p>
-                        <a href="#" class="btn btn-info">Add to card</a>
+                        <p class="card-text">Price : <?= $product_price ?>/-</p>
+                        <a href="index.php?add_to_cart=<?= $product_id ?>" class="btn btn-info">Add to card</a>
                         <a href="product_detail.php?product_id=<?= $product_id ?>" class="btn btn-secondary">View more</a>
                     </div>
                 </div>
@@ -275,8 +281,9 @@ function view_details()
                             <div class="card-body">
                                 <h5 class="card-title p-1"><?= $product_title ?></h5>
                                 <p class="card-text"><?= $description ?></p>
-                                <a href="#" class="btn btn-info">Add to card</a>
-                                <a href="product_detail.php?product_id=<?= $product_id ?>" class="btn btn-secondary">View more</a>
+                                <p class="card-text">Price : <?= $product_price ?>/-</p>
+                                <a href="index.php?add_to_cart=<?= $product_id ?>" class="btn btn-info">Add to card</a>
+                                <a href="index.php" class="btn btn-secondary">Go Home</a>
                             </div>
                         </div>
 
@@ -323,5 +330,93 @@ function getIpAddress()
     return $ip;
 }
 
+// cart function
+
+// Fonction avec un requette non preparer
+// function cart()
+// {
+//     if (isset($_GET['add_to_cart'])) {
+//         global $con;
+
+//         $get_ip_add = securisation(getIpAddress());
+//         $get_product_id = securisation($_GET['add_to_cart']);
+
+//         $select_query = "SELECT * FROM `cart_details` WHERE ip_address = '$get_ip_add' and product_id = '$get_product_id'";
+//         $resultat_select = mysqli_query($con, $select_query);
+
+//         $num_of_rows = mysqli_num_rows($resultat_select);
+//         echo $num_of_rows;
+//         echo $get_product_id;
+//         if ($num_of_rows > 0) {
+//             echo "<script>alert('This item is already present inside cart')</script>";
+//             echo "<script>window.open('index.php','_self')</script>";
+//         } else {
+//             $insert_query = "INSERT INTO `cart_details`(`product_id`, `ip_address`, `quantity`) 
+//             VALUES ('$get_product_id','$get_ip_add','0')";
+//             $resultat_query = mysqli_query($con, $insert_query);
+//             echo "<script>window.open('index.php','_self')</script>";
+//         }
+//     }
+// }
+// // nijanona 6:35 vdeo 25
+
+// fonction avec des requttes preparer 
+function cart()
+{
+    if (isset($_GET['add_to_cart'])) {
+        global $con;
+
+        $get_ip_add = securisation(getIpAddress()); // Sécurise l'adresse IP en utilisant la fonction securisation()
+        $get_product_id = securisation($_GET['add_to_cart']); // Sécurise l'ID du produit en utilisant la fonction securisation()
+
+        $select_query = "SELECT * FROM `cart_details` WHERE ip_address = ? and product_id = ?";
+        $stmt = mysqli_prepare($con, $select_query); // Prépare la requête SELECT avec un marqueur de position pour les valeurs
+        mysqli_stmt_bind_param($stmt, "ss", $get_ip_add, $get_product_id); // Lie les valeurs sécurisées aux marqueurs de position dans la requête
+        mysqli_stmt_execute($stmt); // Exécute la requête préparée
+        $resultat_select = mysqli_stmt_get_result($stmt); // Récupère les résultats de la requête
+
+        $num_of_rows = mysqli_num_rows($resultat_select); // Compte le nombre de lignes dans les résultats
+
+        if ($num_of_rows > 0) {
+            echo "<script>alert('This item is already present inside cart')</script>";
+            echo "<script>window.open('index.php','_self')</script>";
+        } else {
+            $insert_query = "INSERT INTO `cart_details`(`product_id`, `ip_address`, `quantity`) 
+            VALUES (?, ?, '0')";
+            $stmt = mysqli_prepare($con, $insert_query); // Prépare la requête INSERT avec des marqueurs de position
+            mysqli_stmt_bind_param($stmt, "ss", $get_product_id, $get_ip_add); // Lie les valeurs aux marqueurs de position
+            mysqli_stmt_execute($stmt); // Exécute la requête préparée pour insérer les données
+            echo "<script>alert('Item is added to cart')</script>";
+            echo "<script>window.open('index.php','_self')</script>";
+        }
+    }
+}
+
+// function to get cart item numbers
+function cart_item()
+{
+    if (isset($_GET['add_to_cart'])) {
+        global $con;
+
+        $get_ip_add = securisation(getIpAddress());
+
+        $select_query = "SELECT * FROM `cart_details` WHERE ip_address = '$get_ip_add'";
+        $resultat_select = mysqli_query($con, $select_query);
+
+        $count_cart_item = mysqli_num_rows($resultat_select);
+    } else {
+        global $con;
+
+        $get_ip_add = securisation(getIpAddress());
+
+        $select_query = "SELECT * FROM `cart_details` WHERE ip_address = '$get_ip_add'";
+        $resultat_select = mysqli_query($con, $select_query);
+
+        $count_cart_item = mysqli_num_rows($resultat_select);
+    }
+    echo $count_cart_item;
+}
+
+// video 28 00:04
 
 ?>

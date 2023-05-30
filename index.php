@@ -44,13 +44,13 @@ include('functions/common_function.php');
                             <a class="nav-link" href="#">Contact</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#"><i class="fa-solid fa-cart-shopping"></i><sup>1</sup></a>
+                            <a class="nav-link" href="#"><i class="fa-solid fa-cart-shopping"></i><sup><?php cart_item(); ?></sup></a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Total Price :100/-</a>
                         </li>
                     </ul>
-                    <form class="d-flex" role="search" action="search_product.php" method="get"> 
+                    <form class="d-flex" role="search" action="search_product.php" method="get">
                         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search_data">
                         <!-- <button class="btn btn-outline-light" type="submit">Search</button> -->
                         <input type="submit" value="Search" class="btn btn-outline-light " name="search_data_product">
@@ -58,6 +58,9 @@ include('functions/common_function.php');
                 </div>
             </div>
         </nav>
+        <?php
+        cart();
+        ?>
         <!-- Second child -->
         <div class="nav navbar navbar-expand-lg navbar-dark bg-secondary">
             <ul class="navbar-nav me-auto">
@@ -83,8 +86,8 @@ include('functions/common_function.php');
                     getProducts();
                     get_unique_categories();
                     get_unique_brand();
-                    $ip = getIpAddress();
-                    echo 'user ip : '.$ip;
+                    // $ip = getIpAddress();
+                    // echo 'user ip : '.$ip;
                     ?>
                 </div>
             </div>
@@ -116,7 +119,7 @@ include('functions/common_function.php');
             </div>
         </div>
         <!-- Dernier enfant -->
-        <?php include('includes/footer.php')?>
+        <?php include('includes/footer.php') ?>
     </div>
 
 
